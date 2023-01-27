@@ -20,7 +20,14 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  return (data && data.length) ? data
+
+  // Effectue le tri par ordre décroissant
+  .sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  })
+  
+  .map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
@@ -68,7 +75,7 @@ export default ({ data: bills, loading, error }) => {
                 <th>Actions</th>
               </tr>
           </thead>
-          <tbody data-testid="tbody">
+          <tbody id='test' data-testid="tbody">
             ${rows(bills)}
           </tbody>
           </table>
@@ -76,5 +83,5 @@ export default ({ data: bills, loading, error }) => {
       </div>
       ${modal()}
     </div>`
-  )
-}
+    )
+  }
