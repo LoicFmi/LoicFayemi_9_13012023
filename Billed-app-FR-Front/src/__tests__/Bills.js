@@ -27,9 +27,9 @@ describe("Given I am connected as an employee", () => {
       router()
       window.onNavigate(ROUTES_PATH.Bills)
       await waitFor(() => screen.getByTestId('icon-window'))
-      const windowIcon = screen.getByTestId('icon-window')
-      // Vérifie la présence de la classe qui permet la surbrillance de l'icône
-      expect(windowIcon.classList).toContain('active-icon');
+      const billIcon = screen.getByTestId('icon-window')
+      // Vérifie la présence de la classe qui permet la surbrillance de l'icône bill
+      expect(billIcon.classList).toContain('active-icon');
     })
 
     test("Then bills should be ordered from earliest to latest", () => {
@@ -65,6 +65,7 @@ describe("Given I am connected as an employee", () => {
 
       const handleClickNewBill = jest.fn(billsContainer.handleClickNewBill);
       const newBillButton = screen.getByTestId('btn-new-bill');
+
       newBillButton.addEventListener('click', handleClickNewBill);
       userEvent.click(newBillButton);
       //  Vérifie que la fonction handleClickNewBill est bien appelée
@@ -99,6 +100,7 @@ describe("Given I am connected as an employee", () => {
       const handleClickIconEye = jest.fn(() =>
         billsContainer.handleClickIconEye(icon)
       );
+
       icon.addEventListener('click', handleClickIconEye);
       userEvent.click(icon);
       //  Vérifie que la fonction handleClickIconEye est bien appelée
@@ -131,6 +133,7 @@ describe("Given I am a user connected as Employee", () => {
       })
       bills.getBills().then(data => {
         root.innerHTML = BillsUI({ data })
+        // Vérifie la présence de notes de frais sur la page
         expect(document.querySelector('tbody').rows.length).toBeGreaterThan(0)
       })
     })
@@ -148,24 +151,27 @@ describe("Given I am a user connected as Employee", () => {
           email: "a@a"
         }))
         const root = document.createElement("div")
+
         root.setAttribute("id", "root")
         document.body.appendChild(root)
         router()
       })
 
-      test("fetches bills from an API and fails with 404 message error", async () => {
+      test("Then it fetches bills from an API and fails with a 404 message error", async () => {
 
         document.body.innerHTML = BillsUI({ error: 'Erreur 404' });
 
         const message = await screen.getByText(/Erreur 404/)
+        // Vérifie la présence du message d'erreur "Erreur 404"
         expect(message).toBeTruthy()
       })
 
-      test("fetches messages from an API and fails with 500 message error", async () => {
+      test("Then it fetches messages from an API and fails with a 500 message error", async () => {
 
         document.body.innerHTML = BillsUI({ error: 'Erreur 500' });
 
         const message = await screen.getByText(/Erreur 500/)
+        // Vérifie la présence du message d'erreur "Erreur 500"
         expect(message).toBeTruthy()
       })
     })
